@@ -1,0 +1,5 @@
+---
+
+- name: generate client config  # noqa 305
+  shell: "minio-client config host add {{ minio_client.default_host }} http://localhost:9000 {{ minio_server.access_key }} {{ minio_server.secret_key }} --api s3v4"  # noqa 204
+  changed_when: false

@@ -1,0 +1,7 @@
+---
+
+- name: syslog
+  src: https://oss.help/ansible/pub/roles/syslog-stable.tar.gz
+
+- name: lxc-reboot
+  src: https://oss.help/ansible/pub/roles/l/1/lxc-reboot-stable.tar.gz

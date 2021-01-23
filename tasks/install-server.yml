@@ -1,0 +1,84 @@
+---
+
+- name: create group
+  group:
+    name: "{{ minio_user }}"
+    system: true
+    state: present
+
+- name: create user
+  user:
+    name: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+    shell: "/bin/nologin"
+    create_home: false
+    system: true
+    comment: "Minio user"
+    state: present
+
+- name: create binary dir if necesary
+  file:
+    path: "{{ minio_binary_dir }}"
+    state: directory
+
+- name: create and set permissions on data directories
+  file:
+    path: "{{ minio_server.volume }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+
+- name: download binary
+  get_url:
+    url: "{{ minio_download_url }}"
+    checksum: "sha256:{{ minio_download_checksums }}"
+    dest: "{{ minio_binary_dir }}/minio"
+    owner: "root"
+    group: "root"
+    mode: 0755
+  notify: restart minio service
+
+- include_role:
+    name: syslog
+  vars:
+    install_server: true
+    default_server: rsyslog
+  when: syslog_installed is not defined
+
+- name: create log dir if necessary
+  file:
+    path: "{{ minio_log_dir }}"
+    state: directory
+    owner: "syslog"
+    group: "root"
+
+- name: copy syslog config
+  template:
+    src: syslog.conf.j2
+    dest: "/etc/rsyslog.d/99-minio.conf"
+    owner: root
+    group: root
+  notify: minio restart rsyslog service
+
+- name: copy logrotate config
+  template:
+    src: logrotate.conf.j2
+    dest: "/etc/logrotate.d/minio.conf"
+    owner: root
+    group: root
+
+- name: copy systemd unit file
+  template:
+    src: minio-systemd-unit.j2
+    dest: "/etc/systemd/system/minio.service"
+    owner: root
+    group: root
+  notify:
+    - reload minio unit
+    - restart minio service
+
+- name: enable minio service
+  service:
+    name: minio
+    state: started
+    enabled: true

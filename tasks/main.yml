@@ -1,0 +1,17 @@
+---
+
+- name: install server
+  include_tasks: install-server.yml
+  when: minio_install_server and (minio_setup == "full" or minio_setup == "install")
+
+- name: configure server
+  import_tasks: configure-server.yml
+  when: minio_install_server and (minio_setup == "full" or minio_setup == "configure")
+
+- name: install client
+  include_tasks: install-client.yml
+  when: minio_install_client and (minio_setup == "full" or minio_setup == "install")
+
+- name: configure client
+  import_tasks: configure-client.yml
+  when: minio_install_client and (minio_setup == "full" or minio_setup == "configure")

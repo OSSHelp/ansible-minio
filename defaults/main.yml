@@ -1,0 +1,37 @@
+---
+
+minio_setup: full
+
+minio_install_server: true
+minio_install_client: false
+
+minio_user: minio
+minio_download_url: "https://oss.help/builds/minio/minio"
+minio_download_checksums: "https://oss.help/builds/minio/SHA256SUMS"
+minio_conf_dir: /etc/minio
+minio_working_dir: /usr/local
+minio_binary_dir: /usr/local/sbin
+minio_templates_dir: /usr/local/osshelp
+minio_log_dir: /var/log/minio
+
+minio_place_policies: false
+minio_policies:
+  source: 'files/minio/polices'
+  target: '/etc/minio/policies'
+
+minio_server:
+  bind_address: 0.0.0.0
+  bind_port: 9000
+  cluster_members: []
+  volume: "/var/lib/minio/data"
+  access_key: ''
+  secret_key: ''
+  browser: off
+  region: local
+  domain: ''
+
+minio_client:
+  download_url: "https://oss.help/builds/minio/mc"
+  binary_dir: "/usr/local/bin"
+  config: "/root/.minio-client/config.json"
+  default_host: local

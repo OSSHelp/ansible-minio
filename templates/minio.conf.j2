@@ -1,0 +1,17 @@
+MINIO_VOLUMES="{{ minio_server.volume }}"
+{% if minio_server.access_key is defined %}
+MINIO_ACCESS_KEY={{ minio_server.access_key }}
+{% endif %}
+{% if minio_server.secret_key is defined %}
+MINIO_SECRET_KEY={{ minio_server.secret_key }}
+{% endif %}
+{% if minio_server.region is defined %}
+MINIO_REGION={{ minio_server.region }}
+{% endif %}
+{% if minio_server.browser is defined %}
+MINIO_BROWSER={{ minio_server.browser }}
+{% endif %}
+{% if minio_server.domain is defined %}
+MINIO_DOMAIN={{ minio_server.domain }}
+{% endif %}
+MINIO_OPTS="{% if minio_server.options is defined %}{{ minio_server.options }}{% endif %}"

@@ -1,0 +1,46 @@
+---
+
+- name: create conf dir if necessary
+  file:
+    path: "{{ minio_conf_dir }}"
+    state: directory
+    owner: "root"
+    group: "{{ minio_user }}"
+    mode: 0750
+
+- name: copy config
+  template:
+    src: minio.conf.j2
+    dest: "{{ minio_conf_dir }}/minio.conf"
+    owner: root
+    group: "{{ minio_user }}"
+    mode: 0640
+  notify: restart minio service
+
+- name: copy systemd unit file
+  template:
+    src: minio-systemd-unit.j2
+    dest: "/etc/systemd/system/minio.service"
+    owner: root
+    group: root
+  notify:
+    - reload minio unit
+    - restart minio service
+
+- name: prepare directory for minio policies
+  file:
+    path: "{{ minio_policies.target }}"
+    state: directory
+    owner: "root"
+    group: "{{ minio_user }}"
+    mode: 0750
+  when: minio_place_policies
+
+- name: place policy files
+  copy:
+    src: "{{ minio_policies.source }}"
+    dest: "{{ minio_policies.target }}"
+    owner: root
+    group: root
+    mode: 0600
+  when: minio_place_policies

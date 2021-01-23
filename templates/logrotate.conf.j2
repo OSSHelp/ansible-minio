@@ -1,0 +1,12 @@
+{{ minio_log_dir }}/minio.log {
+  daily
+  missingok
+  rotate 7
+  compress
+  delaycompress
+  notifempty
+  sharedscripts
+  postrotate
+    /usr/bin/killall -HUP rsyslogd
+  endscript
+}

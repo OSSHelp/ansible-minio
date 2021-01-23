@@ -1,0 +1,14 @@
+---
+- name: reload minio unit
+  systemd:
+    daemon_reload: yes
+
+- name: minio restart rsyslog service
+  service:
+    name: rsyslog
+    state: restarted
+
+- name: restart minio service
+  service:
+    name: "minio"
+    state: restarted
