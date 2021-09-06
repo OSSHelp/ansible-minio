@@ -5,9 +5,12 @@ minio_setup: full
 minio_install_server: true
 minio_install_client: false
 
+minio_server_version: '2019-07-24'
+minio_client_version: "{{ minio_server_version }}"
+
 minio_user: minio
-minio_download_url: "https://oss.help/builds/minio/minio"
-minio_download_checksums: "https://oss.help/builds/minio/SHA256SUMS"
+minio_download_url: "https://oss.help/builds/minio/{{ minio_server_version }}/minio"
+minio_download_checksums: "https://oss.help/builds/minio/{{ minio_server_version }}/SHA256SUMS"
 minio_conf_dir: /etc/minio
 minio_working_dir: /usr/local
 minio_binary_dir: /usr/local/sbin
@@ -31,7 +34,8 @@ minio_server:
   domain: ''
 
 minio_client:
-  download_url: "https://oss.help/builds/minio/mc"
+  download_url: "https://oss.help/builds/minio/{{ minio_client_version }}/mc"
+  checksums_url: "https://oss.help/builds/minio/{{ minio_client_version }}/SHA256SUMS"
   binary_dir: "/usr/local/bin"
   config: "/root/.minio-client/config.json"
   default_host: local

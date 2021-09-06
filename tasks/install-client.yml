@@ -3,7 +3,7 @@
 - name: download client binary
   get_url:
     url: "{{ minio_client.download_url }}"
-    checksum: "sha256:{{ minio_download_checksums }}"
+    checksum: "sha256:{{ minio_client.checksums_url }}"
     dest: "{{ minio_binary_dir }}/minio-client"
     owner: "root"
     group: "root"

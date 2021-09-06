@@ -32,7 +32,6 @@ Role for MinIO server and MinIO client installation.
           options: "--anonymous"
         }
     }
-
 ```
 
 ## Available parameters
@@ -42,6 +41,8 @@ Role for MinIO server and MinIO client installation.
 | Param | Default | Description |
 | -------- | -------- | -------- |
 | `minio_setup` | `full` | Setup mode. See [OSSHelp KB article](https://oss.help/kb4895) |
+| `minio_server_version` | see [defaults](defaults/main.yml) | MinIO server version to install. |
+| `minio_client_version` | same as `minio_server_version` | MinIO client version to install. |
 | minio_install_server | `true` | Whether to install/configure MinIO server. |
 | minio_install_client | `false` | Whether to install/configure MinIO client. |
 | minio_place_policies | `false` | Whether or not to initiate the policy placing mechanism. |
