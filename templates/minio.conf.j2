@@ -1,9 +1,15 @@
 MINIO_VOLUMES="{{ minio_server.volume }}"
-{% if minio_server.access_key is defined %}
+{% if '2019' in minio_server_version and minio_server.access_key is defined %}
 MINIO_ACCESS_KEY={{ minio_server.access_key }}
 {% endif %}
-{% if minio_server.secret_key is defined %}
+{% if '2019' in minio_server_version and minio_server.secret_key is defined %}
 MINIO_SECRET_KEY={{ minio_server.secret_key }}
+{% endif %}
+{% if not '2019' in minio_server_version and minio_server.access_key is defined %}
+MINIO_ROOT_USER={{ minio_server.access_key }}
+{% endif %}
+{% if not '2019' in minio_server_version and minio_server.secret_key is defined %}
+MINIO_ROOT_PASSWORD={{ minio_server.secret_key }}
 {% endif %}
 {% if minio_server.region is defined %}
 MINIO_REGION={{ minio_server.region }}
@@ -13,5 +19,11 @@ MINIO_BROWSER={{ minio_server.browser }}
 {% endif %}
 {% if minio_server.domain is defined %}
 MINIO_DOMAIN={{ minio_server.domain }}
+{% endif %}
+{% if not '2019' in minio_server_version and minio_server.redirect_url is defined %}
+MINIO_BROWSER_REDIRECT_URL={{ minio_server.redirect_url }}
+{% endif %}
+{% if not '2019' in minio_server_version and minio_server.prometheus_auth_type is defined %}
+MINIO_PROMETHEUS_AUTH_TYPE={{ minio_server.prometheus_auth_type }}
 {% endif %}
 MINIO_OPTS="{% if minio_server.options is defined %}{{ minio_server.options }}{% endif %}"

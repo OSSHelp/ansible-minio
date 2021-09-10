@@ -25,6 +25,7 @@ minio_policies:
 minio_server:
   bind_address: 0.0.0.0
   bind_port: 9000
+  console_port: 9001
   cluster_members: []
   volume: "/var/lib/minio/data"
   access_key: ''
@@ -32,6 +33,8 @@ minio_server:
   browser: off
   region: local
   domain: ''
+  redirect_url: ''
+  prometheus_auth_type: public
 
 minio_client:
   download_url: "https://oss.help/builds/minio/{{ minio_client_version }}/mc"

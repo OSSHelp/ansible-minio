@@ -105,6 +105,7 @@ None, so far.
 - Check the role in various builds
 - Improve tests
 - Improve readme
+- Focal support for new MinIO versions
 
 ## License
 

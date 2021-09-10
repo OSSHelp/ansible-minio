@@ -13,7 +13,7 @@ User={{ minio_user }}
 Group={{ minio_user }}
 
 EnvironmentFile=-/etc/minio/minio.conf
-ExecStart={{ minio_binary_dir }}/minio server --address {{ minio_server.bind_address ~ ':' ~ minio_server.bind_port }} $MINIO_OPTS $MINIO_VOLUMES
+ExecStart={{ minio_binary_dir }}/minio server --address {{ minio_server.bind_address ~ ':' ~ minio_server.bind_port }}{% if not '2019' in minio_server_version and minio_server.console_port is defined %} --console-address {{ minio_server.bind_address ~ ':' ~ minio_server.console_port }}{% endif %} $MINIO_OPTS $MINIO_VOLUMES
 
 Restart=always
 
