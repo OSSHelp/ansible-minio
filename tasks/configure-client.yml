@@ -1,5 +1,27 @@
 ---
 
-- name: generate client config  # noqa 305
-  shell: "minio-client config host add {{ minio_client.default_host }} http://localhost:9000 {{ minio_server.access_key }} {{ minio_server.secret_key }} --api s3v4"  # noqa 204
+- name: check if minio-client cfg exists
+  stat:
+    path: "{{ minio_client.config }}"
+  register: minio_client_stat_result
+
+- name: generate directory structure  # noqa 305
+  shell: "minio-client ls >/dev/null"
   changed_when: false
+  when: not minio_client_stat_result.stat.exists
+
+- name: update given aliases
+  set_fact:
+    minio_client_combined_aliases: "{{ minio_client_combined_aliases | combine(new_item, recursive=true) }}"
+  vars:
+    new_item: "{ '{{ item.key }}': { '{{ minio_client_lookup_key[minio_client_cfg_version] }}': 'auto' } }"
+  with_dict: "{{ minio_client_combined_aliases }}"
+  no_log: true
+
+- name: prepare minio-client config
+  template:
+    src: minio-client-config.j2
+    dest: "{{ minio_client.config }}"
+    owner: root
+    group: root
+    mode: 0600

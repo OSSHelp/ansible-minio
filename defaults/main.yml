@@ -41,4 +41,25 @@ minio_client:
   checksums_url: "https://oss.help/builds/minio/{{ minio_client_version }}/SHA256SUMS"
   binary_dir: "/usr/local/bin"
   config: "/root/.minio-client/config.json"
-  default_host: local
+
+minio_client_default_aliases:
+  local: {
+    url: "http://localhost:{{ minio_server.bind_port }}",
+    accessKey: "{{ minio_server.access_key }}",
+    secretKey: "{{ minio_server.secret_key }}",
+    api: "s3v4"
+  }
+minio_client_custom_aliases: []
+minio_client_combined_aliases: "{{ minio_client_default_aliases | combine(minio_client_custom_aliases) }}"
+minio_client_lookup_key:
+  '9': 'lookup'
+  '10': 'path'
+minio_client_aliases_schemes:
+  '9':
+    version: '9'
+    hosts: "{{ minio_client_combined_aliases }}"
+  '10':
+    version: '10'
+    aliases: "{{ minio_client_combined_aliases }}"
+minio_client_cfg_version: "{{ '9' if minio_client_version == '2019-07-24' else '10' }}"
+minio_client_aliases_finalized: "{{ minio_client_aliases_schemes[minio_client_cfg_version] }}"
