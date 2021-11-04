@@ -16,7 +16,7 @@ Role for MinIO server and MinIO client installation.
 ## Example with custom parameters(do not copy blindly)
 
 ```yaml
-    - role: minio,
+    - role: minio
       minio_install_client: true
       minio_place_policies: true
       minio_server: {

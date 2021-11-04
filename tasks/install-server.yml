@@ -37,6 +37,7 @@
     group: "root"
     mode: 0755
   notify: restart minio service
+  when: not ansible_check_mode
 
 - include_role:
     name: syslog
